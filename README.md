@@ -1,3 +1,3 @@
 # First
 First attempt
-Начало заложено. hello darkness my old friend/
+Начало заложено. hello darkness my old friend
