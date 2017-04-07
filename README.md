@@ -1,4 +1,5 @@
-# First
+﻿# First
 First attempt
-Начало заложено. hello darkness my old friend//
-хочу так
+Начало заложено. 
+И так. Попробуем внести первые изменения.
+
