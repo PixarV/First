@@ -8,40 +8,86 @@
 using namespace std;
 
 Widget::Widget(QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::Widget)
+    QWidget(parent)
+//    ui(new Ui::Widget)
 {
+//    BASS_Init(-1,44100,BASS_DEVICE_3D,0,NULL);  // номер устройства (-1 - по умолчанию)
 
-    BASS_Init(-1,44100,BASS_DEVICE_3D,0,NULL);  // номер устройства (-1 - по умолчанию)
+    QGridLayout* grid = new QGridLayout();
+    QPushButton* play = new QPushButton("play");
+    QPushButton* stop = new QPushButton("stop");
+    QPushButton* pause = new QPushButton("pause");
+    QPushButton* next = new QPushButton("next");
+    QPushButton* prev = new QPushButton("prev");
+    QPushButton* open = new QPushButton("open");
+    grid->addWidget(play, 0, 0);
+    grid->addWidget(stop, 1, 0);
+    grid->addWidget(pause, 2, 0);
+    grid->addWidget(next, 3, 0);
+    grid->addWidget(prev, 4, 0);
+    grid->addWidget(open, 5, 0);
+    setLayout(grid);
 
-//    char filename[] = "Old_Friends.mp3";
+    connect(play, SIGNAL(clicked()), this, SLOT(play()));
+    connect(stop, SIGNAL(clicked()), this, SLOT(stop()));
+    connect(pause, SIGNAL(clicked()), this, SLOT(pause()));
+    connect(next, SIGNAL(clicked()), this, SLOT(next()));
+    connect(prev, SIGNAL(clicked()), this, SLOT(prev()));
 
-    char filename[] = "C:\\Qt_project\\diplom_first\\Old_Friends.mp3";
-//    char *a=filename.c_str();
-    HSTREAM chan = BASS_StreamCreateFile(FALSE, filename, 0, 0, 0);
-
-
-//    HSAMPLE sample = BASS_SampleLoad(FALSE, filename, 0, 0, 1, BASS_SAMPLE_3D);
-//    HCHANNEL channel = BASS_SampleGetChannel(sample, FALSE);
-//    cout << "heu" << endl;
-    BASS_ChannelPlay(chan, FALSE);
-    while (BASS_ChannelIsActive(chan) != BASS_ACTIVE_STOPPED) {
-      Sleep(2000);
-    }
-
-//    if (!) {
-//        cout << "hui";
-//    } else {
-//        cout << "heu";
-//    }
-    ui->setupUi(this);
-    ui->probe->setText("hey");
+    connect(open, SIGNAL(clicked()), this, SLOT(open()));
 
 
-    BASS_Free(); // освобождает текущее устройство.
+
 }
 
 Widget::~Widget()
 {
     delete ui;
 }
+
+void Widget::play() {
+//    QPushButton* button = qobject_cast<QPushButton*>(sender());
+//    thread1.start(); // добавить про если нет песен
+
+//    BASS_Free(); // освобождает текущее устройство.
+}
+
+void Widget::probe() {
+
+}
+
+void Widget::stop() {
+//    QPushButton* button = qobject_cast<QPushButton*>(sender());
+//    thread1.stop();
+}
+
+void Widget::pause() {
+//    QPushButton* button = qobject_cast<QPushButton*>(sender());
+//     HSTREAM stream = thread1.getStream();
+//     BASS_ChannelStop(stream);
+//    thread1.isPaused = true;
+//    thread1.pause();
+}
+
+void Widget::open() {
+//    QPushButton* button = qobject_cast<QPushButton*>(sender());
+
+    QStringList files = QFileDialog::getOpenFileNames(this, "Выберите файлы", "/home", "*.mp3 *.wav"); // что может быть вместо /home
+
+//    thread1.setCount(0);
+    if (files.length() > 0) {
+       thread1.initialize(files);
+    }
+}
+
+void Widget::next() {
+//    QPushButton* button = qobject_cast<QPushButton*>(sender());
+//    thread1.isNext = true;
+//    thread1.next();
+//    int count = thread1.getCount();
+//    HSTREAM stream = thread1.getStream();
+//    BASS_StreamFree(stream);
+//    thread1.setCount(++count); // добавить для 0
+//    thread1.start();
+}
+

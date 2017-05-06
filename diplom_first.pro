@@ -15,8 +15,14 @@ LIBS += -L"C:\Qt_project\diplom_first" -lbass # подключение dll
 
 
 SOURCES += main.cpp\
-        widget.cpp
+        widget.cpp \
+    myfirstthread.cpp \
+    mysecondthread.cpp
 
-HEADERS  += widget.h
+HEADERS  += widget.h \
+    myfirstthread.h \
+    mysecondthread.h
 
 FORMS    += widget.ui
+
+CONFIG += thread
