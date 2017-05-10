@@ -28,11 +28,13 @@ Widget::Widget(QWidget *parent) :
     grid->addWidget(open, 5, 0);
     setLayout(grid);
 
-    connect(play, SIGNAL(clicked()), this, SLOT(play()));
-    connect(stop, SIGNAL(clicked()), this, SLOT(stop()));
-    connect(pause, SIGNAL(clicked()), this, SLOT(pause()));
-    connect(next, SIGNAL(clicked()), this, SLOT(next()));
-    connect(prev, SIGNAL(clicked()), this, SLOT(prev()));
+    thread1 = new MyFirstThread();
+
+    connect(play, SIGNAL(clicked()), this, SLOT(controlButtons()));
+    connect(stop, SIGNAL(clicked()), this, SLOT(controlButtons()));
+    connect(pause, SIGNAL(clicked()), this, SLOT(controlButtons()));
+    connect(next, SIGNAL(clicked()), this, SLOT(controlButtons()));
+    connect(prev, SIGNAL(clicked()), this, SLOT(controlButtons()));
 
     connect(open, SIGNAL(clicked()), this, SLOT(open()));
 
@@ -45,28 +47,27 @@ Widget::~Widget()
     delete ui;
 }
 
-void Widget::play() {
+//void Widget::play() {
 //    QPushButton* button = qobject_cast<QPushButton*>(sender());
 //    thread1.start(); // добавить про если нет песен
 
 //    BASS_Free(); // освобождает текущее устройство.
-}
+//}
 
-void Widget::probe() {
+void Widget::controlButtons() {
+    QPushButton* button = qobject_cast<QPushButton*>(sender());
+    QString text = button->text();
 
-}
+    if (!QString::compare(text, "play")) { // добавить про если нет песен
 
-void Widget::stop() {
-//    QPushButton* button = qobject_cast<QPushButton*>(sender());
-//    thread1.stop();
-}
-
-void Widget::pause() {
-//    QPushButton* button = qobject_cast<QPushButton*>(sender());
-//     HSTREAM stream = thread1.getStream();
-//     BASS_ChannelStop(stream);
-//    thread1.isPaused = true;
-//    thread1.pause();
+        thread1->start();
+    } else if (!QString::compare(text, "stop")) {
+        thread1->stop();
+    } else if (!QString::compare(text, "pause")) {
+        thread1->pause();
+    } else if (!QString::compare(text, "next")) {
+        thread1->next();
+    }
 }
 
 void Widget::open() {
@@ -74,20 +75,9 @@ void Widget::open() {
 
     QStringList files = QFileDialog::getOpenFileNames(this, "Выберите файлы", "/home", "*.mp3 *.wav"); // что может быть вместо /home
 
-//    thread1.setCount(0);
     if (files.length() > 0) {
-       thread1.initialize(files);
+       thread1->initialize(files);
+       thread1->start();
     }
-}
-
-void Widget::next() {
-//    QPushButton* button = qobject_cast<QPushButton*>(sender());
-//    thread1.isNext = true;
-//    thread1.next();
-//    int count = thread1.getCount();
-//    HSTREAM stream = thread1.getStream();
-//    BASS_StreamFree(stream);
-//    thread1.setCount(++count); // добавить для 0
-//    thread1.start();
 }
 

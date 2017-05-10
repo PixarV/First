@@ -20,7 +20,7 @@ class Widget : public QWidget
 
     QString* filename;
     HSTREAM chan;
-    MyFirstThread thread1;
+    MyFirstThread* thread1;
     MyFirstThread thread2;
 
 public:
@@ -29,14 +29,11 @@ public:
 
 private:
     Ui::Widget *ui;
-    void probe();
+//    void probe();
 
 private slots:
-    void play();
-    void stop();
-    void pause();
-    void next();
     void open();
+    void controlButtons();
 };
 
 #endif // WIDGET_H

@@ -16,18 +16,14 @@ MyFirstThread::MyFirstThread()
 
     // не забыть в конце про BASS_Free();
 
-    isPaused = false;
-    isNext = false;
 //    filename = new QString("C:\\Qt_project\\diplom_first\\Old_Friends.mp3");
 //    stream = BASS_StreamCreateFile(FALSE, filename->toStdString().c_str(), 0, 0, 0); // идентификатор потока
-//    connect(this, SIGNAL(bla(int)), this, SLOT(slot1()));
+
 }
 void MyFirstThread::initialize(QStringList files) {
-//    count = files.length();
     count = 0;
     this->files = files;
     BASS_StreamFree(stream);
-//    this->start();
 }
 
 void MyFirstThread::run() {
@@ -35,34 +31,14 @@ void MyFirstThread::run() {
  * BASS_ACTIVE_PLAYING = 1;
  * BASS_ACTIVE_PAUSED = 3; */
 
-
-    cerr << "hey" << endl;
-//    isPaused = false;
-//    isNext = false;
-
     if (!BASS_ChannelPlay(stream, FALSE)) {
 
         QString* filename = new QString(files.at(count));
         stream = BASS_StreamCreateFile(FALSE, filename->toStdU16String().c_str(), 0, 0, BASS_UNICODE); // идентификатор потока
     }
-        BASS_ChannelPlay(stream, FALSE);
+    BASS_ChannelPlay(stream, FALSE);
 
-        while(BASS_ChannelIsActive(stream) != BASS_ACTIVE_STOPPED) {
-
-        }
-
-//    emit MyFirstThread::bla();
-    if (!isNext) {
-          // здесь также isPaused isStopped
-//        this->Suspend();
-//        BASS_StreamFree(stream);
-//        count++;
-
-//        start();
-
-      }
-//
-
+    BASS_ChannelSetSync(stream, BASS_SYNC_END, 0,  MyFirstThread::endPlay, this);
 }
 
 void MyFirstThread::stop() {
@@ -71,23 +47,18 @@ void MyFirstThread::stop() {
 }
 
 void MyFirstThread::pause() {
-//    cerr << "2";
-//    isPaused = false;
     BASS_ChannelStop(stream); // пауза (lol)
 }
 
 void MyFirstThread::next() {
     BASS_StreamFree(stream); // освобождаем поток
-    cerr << count;
+
     if (count != files.length() - 1) {
         count++;
     } else {
         count = 0;
     }
-    cerr << count;
-    isNext = false;
-//    start(); // какого ебаного члена ты не работаешь
-
+    start();
 }
 
 int MyFirstThread::getCount() {
@@ -102,10 +73,16 @@ HSTREAM MyFirstThread::getStream() {
     return stream;
 }
 
-void MyFirstThread::slot1() {
-//    BASS_ChannelStop(stream); // пауза (lol)
-    cerr << "Hai0";
+void MyFirstThread::probe() {
+
 }
+
+void CALLBACK MyFirstThread::endPlay(HSYNC handle, DWORD channel, DWORD data, void* user) {
+    ((MyFirstThread*)user)->next();
+}
+
+// CALLBACK - передача исполняемого кода в качестве одного из параметров другого кода.
+// Обратный вызов позволяет в функции исполнять код, который задаётся в аргументах при её вызове.
 
 
 
